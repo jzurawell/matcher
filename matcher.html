@@ -9,81 +9,110 @@
 </head>
 
 <body>
-<div class="container">
-<h1>Matcher</h1>
+    <div class="container">
+    <h1>Matcher</h1>
+    
+    <p>Enter an article of clothing or a color.</p>
 
-<p>Enter an article of clothing or a color.</p>
-
-    <form class="form-horizontal">
+    <form class="form-horizontal" id="form">
         <div class="input-group">
-            <input type="text" class="form-control" id="answer">
+            <input type="text" class="form-control" id="response">
             <span class="input-group-btn">
-                <button class="btn btn-default" type="submit">Submit</button>
+                <button type="submit" class="btn btn-default">Submit</button>
             </span>
         </div>
     </form>
 
-<script>
+    <div id="results-container">
+    </div>
+    
+    <script>
     var outfits = [
-    {
-        article: "dress",
-        length: "long",
-        color: "blue",
-        type: "feather",
-        accessories: [" embossed light blue belt", " gold and blue topaz ring"],
-        style: "etherial"
-    },  
-    {
-        article: "jacket",
-        length: "long",
-        color: "green",
-        type: "military",
-        accessories: [" white camisole", " red beaded neclace", " black nail polish", " nude heels"],
-        style: "utilitarian chic" 
-    },
-    {
-        article: "dress",
-        length: "long",
-        color: "white",
-        type: "silk",
-        accessories: [" oxblood lipstick", " oxblood nail polish", " diamond earings", " white clutch", " white heels"],
-        style: "1950s"
-    },
-    {
-        article: "jeans",
-        length: "long",
-        color: "white",
-        type: "skinny",
-        accessories: [" white crochet top", " brown calfskin sandals", " long gold necklace", " straw bag"],
-        style: "straight up '70s. Serge Gainsbourg is calling"
-    },
-    {
-        article: "dress",
-        length: "short",
-        color: "blue",
-        type: "tweed jacquard shift",
-        accessories: [" blue chained shoulder bag", " gold ring", " gigantic acetate sunglasses"],
-        style: "'60s sporty"
-    }
+        {
+            article: "dress",
+            length: "long",
+            color: "blue",
+            type: "feather",
+            accessories: [" embossed light blue belt", " gold and blue topaz ring"],
+            style: "etherial"
+        },  
+        {
+            article: "jacket",
+            length: "long",
+            color: "green",
+            type: "military",
+            accessories: [" white camisole", " red beaded neclace", " black nail polish", " nude heels"],
+            style: "utilitarian chic" 
+        },
+        {
+            article: "dress",
+            length: "long",
+            color: "white",
+            type: "silk",
+            accessories: [" oxblood lipstick", " oxblood nail polish", " diamond earings", " white clutch", " white heels"],
+            style: "1950s"
+        },
+        {
+            article: "jeans",
+            length: "long",
+            color: "white",
+            type: "skinny",
+            accessories: [" white crochet top", " brown calfskin sandals", " long gold necklace", " straw bag"],
+            style: "straight up '70s. Serge Gainsbourg is calling"
+        },
+        {
+            article: "dress",
+            length: "short",
+            color: "blue",
+            type: "tweed jacquard shift",
+            accessories: [" blue chained shoulder bag", " gold ring", " gigantic acetate sunglasses"],
+            style: "'60s sporty"
+        }
     ]
 
+    function getAnswer() {
+        return document.getElementById("response").value;
+    }
 
-    var answer = document.getElementById("answer").value;
-    var foundItems = [];
-    var answerMatching = function(answer) {
+    function renderMessages(messages) {
+        var resultsContainer = document.getElementById("results-container")
+        resultsContainer.innerHTML = "";
+        messages.forEach(function(message) {
+            var p = document.createElement('p');
+            p.innerText = message;
+            resultsContainer.appendChild(p);
+        })
+    }
+
+    function processAnswer(userAnswer) {
+        var foundItems = [];
+        var messages = [];
         outfits.forEach(function(item) {
-            if (item.article === answer.toLowerCase() || item.color === answer.toLowerCase()) {
+            if (item.article === userAnswer || item.color === userAnswer) {
                 foundItems.push(item);
-                console.log("Wear " + item.length + " " + item.color + " " + item.type + " " + item.article + " with" + item.accessories);
-                console.log("This style is " + item.style + ".\n")
+                messages.push("Wear " + item.length + " " + item.color + " " + item.type + " " + item.article + " with" + item.accessories + ". " + "This style is " + item.style + ".\n");
             }
         })
         if (foundItems.length < 1) {
-            console.log("Sorry, no matches!");
+            messages.push("Sorry, no matches!");
         }
+        renderMessages(messages);
     }
-</script>
 
+    var form = document.getElementById("form");
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        var answer = getAnswer();
+        processAnswer(answer);
+    });
+
+    // var input = document.getElementById("response");
+    // input.addEventListener("keyup", function(event) {
+    //     var answer = getAnswer();
+    //     processAnswer(answer);
+    //     console.log(answer);
+    // })
+</script>
 
 </div>
 </body>
