@@ -1,67 +1,42 @@
-var readline = require('readline');
-
-var rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-
-var outfits = [
-    {
-        article: "dress",
-        length: "long",
-        color: "blue",
-        type: "feather",
-        accessories: [" embossed light blue belt", " gold and blue topaz ring"],
-        style: "etherial"
-    },  
-    {
-        article: "jacket",
-        length: "long",
-        color: "green",
-        type: "military",
-        accessories: [" white camisole", " red beaded neclace", " black nail polish", " nude heels"],
-        style: "utilitarian chic" 
-    },
-    {
-        article: "dress",
-        length: "long",
-        color: "white",
-        type: "silk",
-        accessories: [" oxblood lipstick", " oxblood nail polish", " diamond earings", " white clutch", " white heels"],
-        style: "1950s"
-    },
-    {
-        article: "jeans",
-        length: "long",
-        color: "white",
-        type: "skinny",
-        accessories: [" white crochet top", " brown calfskin sandals", " long gold necklace", " straw bag"],
-        style: "straight up '70s. Serge Gainsbourg is calling"
-    },
-    {
-        article: "dress",
-        length: "short",
-        color: "blue",
-        type: "tweed jacquard shift",
-        accessories: [" blue chained shoulder bag", " gold ring", " gigantic acetate sunglasses"],
-        style: "'60s sporty"
+    function getAnswer() {
+        return document.getElementById("response").value;
     }
-]
 
-rl.question("Enter an article of clothing or a color! ", function(answer) {
-    console.log("Checking some looks...\n");
-    var foundItems = [];
-    outfits.forEach(function(item) {
-        if (item.article === answer.toLowerCase() || item.color === answer.toLowerCase()) {
-            foundItems.push(item);
-            console.log("Wear " + item.length + " " + item.color + " " + item.type + " " + item.article + " with" + item.accessories);
-            console.log("This style is " + item.style + ".\n")
+    function renderMessages(messages) {
+        var resultsContainer = document.getElementById("results-container")
+        resultsContainer.innerHTML = "";
+        messages.forEach(function(message) {
+            var p = document.createElement('p');
+            p.innerText = message;
+            resultsContainer.appendChild(p);
+        })
+    }
+
+    function processAnswer(userAnswer) {
+        var foundItems = [];
+        var messages = [];
+        outfits.forEach(function(item) {
+            if (item.article === userAnswer || item.color === userAnswer) {
+                foundItems.push(item);
+                messages.push("What to wear: " + " " + item.color + " " + item.type + " " + item.article + " \nAccessories:" + item.accessories + "\n" + "Style: " + item.style + "\n");
+            }
+        })
+        if (foundItems.length < 1) {
+            messages.push("Sorry, no matches!");
         }
-    })
-    if (foundItems.length < 1) {
-        console.log("Sorry, no matches!");
+        renderMessages(messages);
     }
 
-  rl.close();
-});
+    var form = document.getElementById("form");
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        var answer = getAnswer();
+        processAnswer(answer);
+    });
 
+    // var input = document.getElementById("response");
+    // input.addEventListener("keyup", function(event) {
+    //     var answer = getAnswer();
+    //     processAnswer(answer);
+    //     console.log(answer);
+    // })
